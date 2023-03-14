@@ -64,10 +64,8 @@ header {
   text-decoration: wavy;
 }
 
-/* cellpadding="4" frame="border" rules="groups" */
 table, th {
-  /* border: #727272; */
   border: 1px solid;
-  
+
 
 }
