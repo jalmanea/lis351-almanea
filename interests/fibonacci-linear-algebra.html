@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Favorite courses of 2021-22 AY</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="../style.css">
+    
+    <!-- These 2 scripts are for implementing LaTeX into HTML. All LaTeX code in this page is written by me -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+
+<body>
+	<header>
+		<div>
+			<nav>
+				<ul id="nav_pages">
+					<li><a href="../index.html">Home</a></li>
+					<li><a href="../courses/ay2021-22.html">Favorite courses of AY 2021-22</a></li>
+					<li><a href="../courses/cs577.html">CS577 notes</a></li>
+					<li><a href="./fibonacci-linear-algebra.html">Interesting math stuff</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+    <div id="main_body">
+        <h1>An analytical solution to the Fibonacci sequence using Linear Algebra</h1>
+        <h2>What is the Fibonacci sequence?</h3>
+        <p>The <a href="https://en.wikipedia.org/wiki/Fibonacci_sequence">Fibonacci sequence</a> is an amazing mathematical sequence.<br>
+                It is defined by the fact that the value of a term is the sum of the previous two, with the first two terms being 0 and 1.<br><br>
+                We can descibe it notationally by:<br>
+                \( \qquad f_1 = 0, \quad f_2 = 1, \quad f_n=f_{n-1}+f_{n-2}\)</p>
+        <p>The first few terms are: \(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, \dots\)<br>
+                The goal is to find a formula such that if you plug in the number \(n\), it would result in the \(n\)-th Fibonacci number.</p>
+
+        <h3>Let's set up the model</h3>
+        <p>We can describe the \(n\)-th term as a <i>linear</i> system:
+            \[
+            f_n = f_{n-1} + f_{n-2}\\
+            f_{n-1} = f_{n-1}
+            \]
+        </p>
+        <p>Writing the above system in matrix form would be:    
+            \[
+            \begin{bmatrix}
+            f_n \\
+            f_{n-1} \\
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+            1 & 1 \\
+            1 & 0 \\
+            \end{bmatrix}
+            \begin{bmatrix}
+            f_{n-1} \\
+            f_{n-2} \\
+            \end{bmatrix}
+            \]
+            If you take the time to do the matrix product, it will be exactly the same system that was previously described.<br>
+            Think of the matrix product as a transformation. Each time we're multiplying by this matrix we're moving the system from one term to the next.<br>
+        </p>
+        <p>Thus, we can think of this model as a dynamic linear model, which has a general form of:
+            \[
+            A u_0 = u_1
+            \]
+            where \(u_0\) is the initial state, \(u_1\) is the final state, and \(A\) is the transformation matrix.<br>
+            The next goal is to find the eigenvalues and eigenvectors of such a transformation matrix.
+        </p>
+        <h3>Finding the eigenvalues and eigenvectors of \(A\)</h3>
+        <p>Let \(S\) be a \(2 \times 2\) matrix where the columns are two linearly-independent eigenvectors of our transformation matrix.<br>
+            Let \(\Delta\) be the diagonalization of \(A\), i.e., having the eigenvalues at its main diagonal and 0's everywhere else.</p>
+        <p>By definition of eigenvalues and eigenvectors, the identity \(AS = S\Delta\) holds. Thus:
+            \[
+                AS = S\Delta \implies A = S\Delta S^{-1} \implies u_1 = S\Delta S^{-1} \, u_0
+            \]
+            Applying the transformation matrix \(A\) an arbitrary integral number of times, say \(n\) times, results in the following expression:
+            \[
+                u_n = S \Delta^n S^{-1} \, u_0
+            \]
+        </p>
+        <p>This is pretty much what we're looking for. We just need to find \(S\) and \(\Delta \).</p>
+        <h3>Finding \(S\) and \(\Delta\)</h3>
+        <p>Let's find the eigenvalues of \(A\):
+            \[
+                A x = \lambda x \implies (A-\lambda I_2) x = 0 \implies
+                \begin{vmatrix}
+                1 - \lambda & 1 \\
+                1 & -\lambda \\
+                \end{vmatrix} = 0 \implies (1-\lambda)(-\lambda)-1=0\implies \lambda^2-\lambda-1=0\\
+                \lambda \in \left\{\frac{1+\sqrt{5}}{2} , \frac{1-\sqrt{5}}{2}\right\}
+            \]
+            Thus, our two eigenvalues are \(\lambda_1 = \frac{1+\sqrt{5}}{2}\) and \(\lambda_2 = \frac{1-\sqrt{5}}{2}\).<br>
+            We can get 2 linearly-independent eigenvectors of \(A\) directly. So:
+            \[
+                v_1 = \begin{bmatrix} \frac{1+\sqrt{5}}{2} \\ 1 \end{bmatrix} ,\quad 
+                v_2 = \begin{bmatrix} \frac{1-\sqrt{5}}{2} \\ 1 \end{bmatrix}
+            \]
+            Where \(v_1\) is an eigenvector associated with eigenvalue \(\lambda_1\), and \(v_2\) is an eigenvector associated with eigenvalue \(\lambda_2\).
+        </p>
+        <p>
+            Now, we have all the pieces we need to find \(S,\, S^{-1},\) and \(\Delta\):
+            \[
+                S = 
+                \begin{bmatrix}
+                v_1 & \bigm| & v_2 
+                \end{bmatrix} =
+                \begin{bmatrix}
+                \frac{1+\sqrt{5}}{2} & \frac{1-\sqrt{5}}{2} \\
+                1 & 1 \\
+                \end{bmatrix} \\
+
+                S^{-1} = \frac{1}{\sqrt 5}
+                \begin{bmatrix}
+                1 &  \frac{\sqrt{5} - 1}{2} \\
+                -1 & \frac{\sqrt{5} + 1}{2} \\
+                \end{bmatrix} = 
+                \begin{bmatrix}
+                \frac{1}{\sqrt 5}  &  \frac{\sqrt{5} - 1}{2 \sqrt 5} \\
+                \frac{-1}{\sqrt 5} & \frac{\sqrt{5} + 1}{2 \sqrt 5} \\
+                \end{bmatrix} \\
+
+                \Delta =
+                \begin{bmatrix}
+                \lambda_1 & 0 \\
+                0 & \lambda_2 \\
+                \end{bmatrix} =
+                \begin{bmatrix}
+                \frac{1+\sqrt{5}}{2} & 0 \\
+                0 & \frac{1-\sqrt{5}}{2} \\
+                \end{bmatrix}
+            \]
+        </p>
+        <p>We define the initial state \(u_0\), which would be \( \begin{bmatrix} 1 & 1 \end{bmatrix} ^ \bf{T} \), as a linear combination of the columns of \(S\):
+            \[
+                u_0 = S c \implies c = S^{-1} u_0 \implies
+                c = \begin{bmatrix}
+                \frac{1}{\sqrt 5}  &  \frac{\sqrt{5} - 1}{2 \sqrt 5} \\
+                \frac{-1}{\sqrt 5} & \frac{\sqrt{5} + 1}{2 \sqrt 5} \\
+                \end{bmatrix} \begin{bmatrix}
+                1 \\
+                1
+                \end{bmatrix} = \begin{bmatrix}
+                \frac{5 + \sqrt{5}}{10} \\
+                \frac{5 - \sqrt{5}}{10} \\
+                \end{bmatrix}
+            \]
+        </p>
+        <h3>Combining the pieces together</h3>
+        <p>Thus, by combining everything together we get:
+            \[
+                u_n = S \Delta^n c \implies u_n = \begin{bmatrix} f_{n+3} \\ f_{n+2} \end{bmatrix} =
+                \begin{bmatrix}
+                \frac{1+\sqrt{5}}{2} & \frac{1-\sqrt{5}}{2} \\
+                1 & 1 \\
+                \end{bmatrix} \begin{bmatrix}
+                \frac{1+\sqrt{5}}{2} & 0 \\
+                0 & \frac{1-\sqrt{5}}{2} \\
+                \end{bmatrix} ^{\, n} \, \begin{bmatrix}
+                \frac{5 + \sqrt{5}}{10} \\
+                \frac{5 - \sqrt{5}}{10} \\
+                \end{bmatrix}
+            \]
+        </p>
+        <p>By doing the boring algebra work, the expression simplifies to:
+            \[
+                \begin{bmatrix} f_{n+3} \\ f_{n+2} \end{bmatrix} =
+                \begin{bmatrix}
+                \frac{1 + \sqrt{5}}{2} \\
+                1 \\
+                \end{bmatrix} \left(\frac{1 + \sqrt 5}{2} \right) ^ n \,
+                \left(\frac{5 + \sqrt 5}{10} \right) +
+                \begin{bmatrix}
+                \frac{1 - \sqrt{5}}{2} \\
+                1 \\
+                \end{bmatrix} \left(\frac{1 - \sqrt 5}{2} \right) ^ n \,
+                \left(\frac{5 - \sqrt 5}{10} \right)
+            \]
+            This. This is it. An analytical closed form solution to the Fibonacci sequence.<br>
+            We simply plug in any value of \(n \) and we get the \((n+2)\)-th and \((n+3)\)-th Fibonacci number.<br><br>
+            Pretty cool, right?
+            
+            <br><br><br><br><br><br>
+        </p>
+    </div>
+
+	
+</body>
+
+</html>

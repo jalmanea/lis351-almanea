@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Favorite courses of 2021-22 AY</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="../style.css">
+    
+    <!-- These 2 scripts are for implementing LaTeX into HTML. All LaTeX code in this page is written by me -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+
+<body>
+	<header>
+		<div>
+			<nav>
+				<ul id="nav_pages">
+					<li><a href="../index.html">Home</a></li>
+					<li><a href="./ay2021-22.html">Favorite courses of AY 2021-22</a></li>
+                    <li><a href="./cs577.html">CS577 notes</a></li>
+					<li><a href="../interests/fibonacci-linear-algebra.html">Interesting math stuff</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+    <div id="main_body">
+        <h1>My notes for CS577: Algorithms</h1>
+        <p>Ah, yes. The notorious algorithms class.<br> 
+            Almost all CS majors take this course, as it is probably one of the most important, if not the most, important class in their degree<br>
+            The class is, of course, incredibly difficult. Weekly homeworks, which take ~10 hours to complete, with biweekly quizzes, and a final worth 45% of your grade.<br>
+            In here, I plan on putting my notes for this class. Of course, these are not comprehensive at all. They are made by me and tailored to me.<br>
+            In terms of taking notes, I'm a big-picture kind of person, and I think this will be clearly reflected in these notes.<br>
+        </p>
+        <h2>Asymptotic Analysis</h2>
+        <p>Generally speaking, we can describe the <i>asymptotic</i> relation between functions using the Bachmann-Landau notation.</p>
+        <h3>Big-Oh</h3>
+        <p>We define Big-Oh by:
+            \[
+                O(g(n)) = \{f(n): \exists c, n_0 > 0, \, \forall n \geq n_0 \, | \, 0 \leq f(n) \leq c\,g(n) \}
+            \]
+            In other words, let \(f(n)\) and \(g(n)\) be functions of input size \(n\). We say that \(f(n) \in O(g(n)) \iff \exists c, n_0 > 0, \, \forall n \geq n_0 \, : \, 0 \leq f(n) \leq c\,g(n) \) <br>
+            
+            <br>
+            In less formal terms, it means that as \(f(n)\) grows, \(g(n)\) grows larger than it after a ceratin point with a constant factor; acting like an <i>upper</i> bound.
+        </p>
+        <h3>Big-Omega</h3>
+        <p>We define Big-Omega by:
+            \[
+                \Omega(g(n)) = \{f(n): \exists d, n_0 > 0, \, \forall n \geq n_0 \, | \, 0 \leq d\,g(n) \leq f(n) \}
+            \]
+            In other words, let \(f(n)\) and \(g(n)\) be functions of \(n\). We say that \(f(n) \in \Omega(g(n)) \iff \exists d, n_0 > 0, \, \forall n \geq n_0 \, : \,0 \leq d\,g(n) \leq f(n) \) <br>
+            <br>
+            In less formal terms, it means that as \(f(n)\) grows, \(g(n)\) grows smaller than it after a ceratin point with a constant factor; acting like a <i>lower</i> bound.<br><br>
+            Combining both definitons of Big-Oh and Big-Omega, we can define Big-Theta
+        </p>
+        <h3>Big-Theta</h3>
+        <p>We can define Big-Theta by:
+            \[
+                \Theta(g(n)) = \{f(n): \exists c, d, n_0 > 0, \, \forall n \geq n_0 \, | \, 0 \leq d\,g(n) \leq f(n) \leq c\, g(n) \}
+            \]
+            In less formal terms, it means that as \(f(n)\) grows, \(g(n)\) can act as a lower bound and an upper bound, by  a constant factor after a certain point.<br><br>
+        </p>
+        <h3>Little-Oh</h3>
+        <p>Little-Oh is a stronger relation that Big-Oh. It is defined by:
+            \[
+                o(g(n)) = \{f(n): \forall c >0,\, \exists n_0 > 0, \, \forall n \geq n_0 \, | \, 0 \leq f(n) < c\,g(n) \}
+            \]
+            It means that \(f\) is asymptotically insignificant to \(g\) after a certain point.
+        </p>
+        <h3>Little-Omega</h3>
+        <p>Little-Omega is a stronger relation that Big-Omega. It is defined by:
+            \[
+                \omega(g(n)) = \{f(n): \forall d>0, \, \exists n_0 > 0, \, \forall n \geq n_0 \, | \, 0 \leq d\,g(n) < f(n) \}
+            \]
+            <br><br>
+        </p>
+        <h3>Useful asymptotic properties</h3>
+        <div class="column">
+
+            <p>Here are a few properties that you'll likely need to recall instantly:</p>
+            <ul>
+                <li><p>\[\text{For } c_d > 0,\,\, f(n) = c_d \cdot n^d + c_{d-1} \cdot n^{d-1} + \dots + c_1 \cdot n + c_0 \in O(n^d)\]</p></li>
+                <li><p>\[\log_b n = \frac{\log_a n}{log_a b} = \Theta(\log n)\]</p></li>
+                <li><p>\[\forall a, b > 0, \, (\log(n))^a \in o(n^b)\]</p></li>
+                <li><p>\[\forall r > 1, d > 0,\, n^d \in o(r^n)\]</p></li>
+            </ul>
+        </div>
+        <div class="column">
+            <figure>
+                <img src="./common_runtimes.png" width="300px" alt="Common runtimes">
+                <figcaption>Common runtimes</figcaption>
+            </figure>
+        </div>
+        
+
+
+
+
+    </div>
+
+	
+</body>
+
+</html>
