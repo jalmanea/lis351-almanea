@@ -1,7 +1,7 @@
 body {
   margin-left: 5em;
   line-height: 1;
-  font-family: Georgia;
+  font-family: Georgia, serif;
   background-color: #ce9c9c9c;
   
 }
@@ -62,4 +62,12 @@ header {
 
 .external_links {
   text-decoration: wavy;
+}
+
+/* cellpadding="4" frame="border" rules="groups" */
+table, th {
+  /* border: #727272; */
+  border: 1px solid;
+  
+
 }
